@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3 uid="uid://lkh2ptnaaqmg"]
+
+[ext_resource type="Texture2D" uid="uid://n3bue3kjbaob" path="res://mud_road_puresky_4k.exr" id="1_a5la5"]
+[ext_resource type="PackedScene" uid="uid://ckf8b7ghuuq4n" path="res://scenes/player.tscn" id="2_na8nc"]
+[ext_resource type="AudioStream" uid="uid://bx1fwwo0jt2dj" path="res://assets/sounds/menu_music.mp3" id="3_q0r06"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lnrdv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aosxg"]
+albedo_color = Color(0.162519, 0.0680295, 1.20327e-08, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2nx70"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_q5dr6"]
+panorama = ExtResource("1_a5la5")
+
+[sub_resource type="Sky" id="Sky_tgxlq"]
+sky_material = SubResource("PanoramaSkyMaterial_q5dr6")
+
+[sub_resource type="Environment" id="Environment_th0ec"]
+background_mode = 2
+sky = SubResource("Sky_tgxlq")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(24, 0, 0, 0, 1, 0, 0, 0, 24, 0, 0, 0)
+mesh = SubResource("BoxMesh_lnrdv")
+skeleton = NodePath("StaticBody3D")
+surface_material_override/0 = SubResource("StandardMaterial3D_aosxg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("BoxShape3D_2nx70")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_th0ec")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.676735, 0.736227, 0, -0.736227, 0.676735, 0, 2.78903, 0)
+light_color = Color(0.999736, 0.923568, 0.809352, 1)
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_na8nc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.140521, 1.70555, 1.55184)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_q0r06")
+volume_db = -10.0
+autoplay = true

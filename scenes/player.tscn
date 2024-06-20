@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckf8b7ghuuq4n"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_68xsm"]
+[ext_resource type="PackedScene" uid="uid://62hev4ltlv48" path="res://scenes/pause_menu.tscn" id="2_xjwub"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m4ci4"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f3y5t"]
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Camera_Controller")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_68xsm")
+Camera_Controller = NodePath("CameraController/FPCamera")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_m4ci4")
+
+[node name="CharacterMesh" type="MeshInstance3D" parent="CollisionShape3D"]
+mesh = SubResource("CapsuleMesh_f3y5t")
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="FPCamera" type="Camera3D" parent="CameraController"]
+fov = 90.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraController/FPCamera"]
+
+[node name="PauseMenu" parent="CameraController/FPCamera/CanvasLayer" instance=ExtResource("2_xjwub")]
+visible = false
